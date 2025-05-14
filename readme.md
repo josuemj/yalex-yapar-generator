@@ -44,11 +44,7 @@ Make sure your input files (.yalex, .yapar, and test strings) are placed in the 
 ## ✅ Requirements
 
 - Python 3.8+
-- (Optional) `graphviz` for automata visualization
+- `graphviz` for automata visualization
 
 ---
 
-## 📚 Notes
-
-- Do **not** use regex libraries — pattern recognition is done via finite automata as required.
-- GUI must be functional and user-friendly as part of the evaluation.
