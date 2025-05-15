@@ -1,0 +1,52 @@
+(* Simplified Complex YALex *)
+
+(* Definiciones básicas *)
+let delimitador = [' ''\t''\n']
+let espacioEnBlanco = delimitador+
+
+let digito = ['0'-'9']
+let numero = digito+
+let decimal = digito+'.'digito+
+
+let letra = ['a'-'z''A'-'Z']
+let identificador = letra(letra|digito|'_')*
+
+(* Palabras clave *)
+let keyword = 'if'|'else'|'while'|'for'|'return'|'def'|'class'|'print'|'None'|'True'|'False'|'in'|'range'
+
+(* Cadenas - definición simplificada *)
+let cadena = '"'[^'"']*'"'
+
+rule tokens =
+    espacioEnBlanco {}
+  | keyword         { print("PalabraClave\n") }
+  | identificador   { print("Identificador\n") }
+  | decimal         { print("Decimal\n") } 
+  | numero          { print("Numero\n") }
+  | '=='            { print("Operador de igualdad\n") }
+  | '!='            { print("Operador diferente\n") }
+  | '<='            { print("Operador menor o igual que\n") }
+  | '>='            { print("Operador mayor o igual que\n") }
+  | '+='            { print("Operador de asignacion suma\n") }
+  | '-='            { print("Operador de asignacion resta\n") }
+  | '*='            { print("Operador de asignacion multiplicacion\n") }
+  | '/='            { print("Operador de asignacion division\n") }
+  | '%='            { print("Operador de asignacion modulo\n") }
+  | '+'             { print("Operador de suma\n") }
+  | '-'             { print("Operador de resta\n") }
+  | '*'             { print("Operador de multiplicacion\n") }
+  | '/'             { print("Operador de division\n") }
+  | '%'             { print("Operador de modulo\n") }
+  | '<'             { print("Operador menor que\n") }
+  | '>'             { print("Operador mayor que\n") }
+  | '='             { print("Operador de asignacion\n") }
+  | '('             { print("Parentesis izquierdo\n") }
+  | ')'             { print("Parentesis derecho\n") }
+  | '{'             { print("Llave izquierda\n") }
+  | '}'             { print("Llave derecha\n") }
+  | '['             { print("Corchete izquierdo\n") }
+  | ']'             { print("Corchete derecho\n") }
+  | ';'             { print("Punto y coma\n") }
+  | ','             { print("Coma\n") }
+  | ':'             { print("Dos puntos\n") }
+  | cadena          { print("String literal\n") }

@@ -1,0 +1,24 @@
+let delimitador = [' ' '\t' '\n']+
+let letra = ['a'-'z' 'A'-'Z']
+let digito = ['0'-'9']
+
+let identificador = letra (letra | digito)*
+let igual = "=="
+let asigna = "="
+let dospuntos = ":"
+let cadena = '"' [^"\n"]* '"'
+let keyword = "if" | "else" | "while" | "for" | "return"
+let decimal = digito+ '.' digito+   
+let entero = digito+
+let numero = decimal | numero
+
+
+rule tokens = parse
+    | delimitador       { tokens lexbuf }  (* Ignora espacios, tabs y saltos de línea *)
+    | keyword           { print_endline "PalabraClave" }
+    | identificador     { print_endline "Identificador" }
+    | numero            { print_endline "Numero" }
+    | igual             { print_endline "Operador de igualdad" }
+    | asigna            { print_endline "Operador de asignacion" }
+    | dospuntos         { print_endline "DosPuntos" }
+    | cadena            { print_endline "Cadena" }

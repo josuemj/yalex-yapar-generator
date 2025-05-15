@@ -1,0 +1,8 @@
+for i in range(5):
+    total = 0
+    while total < 100:
+        if i % 2 == 0:
+            total += i * 10.5
+        else:
+            total *= 2
+    print("Loop completed with value:", total)
