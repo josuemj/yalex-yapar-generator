@@ -1,24 +1,45 @@
-let delimitador = [' ' '\t' '\n']+
-let letra = ['a'-'z' 'A'-'Z']
+(* Complex YALex *)
+
+(* --- DEFINICIONES BÁSICAS --- *)
+let delimitador = [' ''\t''\n']
+let espacioEnBlanco = delimitador+
+
 let digito = ['0'-'9']
+let letra = ['a'-'z''A'-'Z']
+let punto = '.'
 
-let identificador = letra (letra | digito)*
-let igual = "=="
-let asigna = "="
-let dospuntos = ":"
-let cadena = '"' [^"\n"]* '"'
-let keyword = "if" | "else" | "while" | "for" | "return"
-let decimal = digito+ '.' digito+   
-let entero = digito+
-let numero = decimal | numero
+let numero = digito+
+let decimal = digito+ punto digito+  (* Al menos un dígito después del punto *)
+let identificador = letra (letra | digito | '_')*
 
+(* --- PALABRAS CLAVE --- *)
+let keyword = 'if' | 'else' | 'while' | 'for' | 'print' | 'None' | 'True' | 'False'
 
-rule tokens = parse
-    | delimitador       { tokens lexbuf }  (* Ignora espacios, tabs y saltos de línea *)
-    | keyword           { print_endline "PalabraClave" }
-    | identificador     { print_endline "Identificador" }
-    | numero            { print_endline "Numero" }
-    | igual             { print_endline "Operador de igualdad" }
-    | asigna            { print_endline "Operador de asignacion" }
-    | dospuntos         { print_endline "DosPuntos" }
-    | cadena            { print_endline "Cadena" }
+(* --- CADENAS DE TEXTO --- *)
+let cadena = '"' [^'"']* '"'
+
+(* --- REGLAS --- *)
+rule tokens =
+    espacioEnBlanco                                 {}  (* Ignorado *)
+  | keyword                                          { print("PalabraClave\n") }
+  | decimal                                          { print("Decimal\n") }
+  | numero                                           { print("Numero\n") }
+  | identificador                                    { print("Identificador\n") }
+  | cadena                                           { print("cadena\n") }
+  | '=='                                             { print("Operador de igualdad\n") }
+  | '!='                                             { print("Operador diferente\n") }
+  | '<='                                             { print("Operador menor o igual que\n") }
+  | '>='                                             { print("Operador mayor o igual que\n") }
+  | '+'                                              { print("Operador de suma\n") }
+  | '-'                                              { print("Operador de resta\n") }
+  | '*'                                              { print("Operador de multiplicacion\n") }
+  | '/'                                              { print("Operador de division\n") }
+  | '%'                                              { print("Operador de modulo\n") }
+  | '<'                                              { print("Operador menor que\n") }
+  | '>'                                              { print("Operador mayor que\n") }
+  | '='                                              { print("Operador de asignacion\n") }
+  | '('                                              { print("Parentesis izquierdo\n") }
+  | ')'                                              { print("Parentesis derecho\n") }
+  | ';'                                              { print("Punto y coma\n") }
+  | ','                                              { print("Coma\n") }
+  | ':'                                              { print("Dos puntos\n") }

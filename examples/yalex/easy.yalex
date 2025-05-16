@@ -1,16 +1,21 @@
-(* Ejemplo básico *)
+(* Easy YALex *)
 
 let delimitador = [' ''\t''\n']
 let espacioEnBlanco = delimitador+
+
 let digito = ['0'-'9']
-let numero = '-'?digito+
 let letra = ['a'-'z''A'-'Z']
-let identificador = letra(letra|digito)*
+
+let numero = digito+
+let identificador = letra (letra | digito)*
 
 rule tokens =
-    espacioEnBlanco {}
-  | identificador   { print("Identificador\n") }
-  | numero          { print("Numero\n") }
-  | '+'             { print("Operador de suma\n") }
-  | '*'             { print("Operador de multiplicacion\n") }
-  | '='             { print("Operador de asignacion\n") }
+    espacioEnBlanco                  {}
+  | numero                           { print("Numero\n") }
+  | identificador                    { print("Identificador\n") }
+  | '='                              { print("Operador de asignacion\n") }
+  | '+'                              { print("Operador de suma\n") }
+  | '-'                              { print("Operador de resta\n") }
+  | '*'                              { print("Operador de multiplicacion\n") }
+  | '/'                              { print("Operador de division\n") }
+  | ';'                              { print("Punto y coma\n") }
