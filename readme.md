@@ -11,7 +11,7 @@ This project is a syntax analyzer generator that implements a complete compilati
 │   readme.md          # Project documentation
 │
 ├───gui/               # Graphical User Interface implementation
-├───input/             # .yalex, .yapar and input string files (esay, medium, hard etc)
+├───input/             # .yalex, .yapar and input string files (easy, medium, hard etc)
 ├───output/            # Visual outputs, parse results, errors, automata
 ├───yalex/             # Lexical analyzer (YALex)
 └───yapar/             # Syntax analyzer (YAPar)
