@@ -1,4 +1,5 @@
 from collections import defaultdict
+from .token_map import TOKEN_MAP
 from .item import Item
 
 def cerradura(items, grammar):
@@ -66,7 +67,9 @@ class Automaton:
             result += f"State {idx}:\n"
             for item in state:
                 result += f"  {item}\n"
+
         result += "\nTransitions:\n"
         for (src, sym), dst in self.transitions.items():
-            result += f"  State {src} --[{sym}]--> State {dst}\n"
+            sym_repr = TOKEN_MAP.get(sym, sym)
+            result += f"  State {src} --[{sym_repr}]--> State {dst}\n"
         return result

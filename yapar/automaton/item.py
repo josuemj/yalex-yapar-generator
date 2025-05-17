@@ -1,3 +1,5 @@
+from yapar.automaton.token_map import TOKEN_MAP
+
 class Item:
     def __init__(self, lhs, rhs, dot_position=0):
         self.lhs = lhs
@@ -24,4 +26,7 @@ class Item:
     def __str__(self):
         symbols = self.rhs[:]
         symbols.insert(self.dot, '~')
-        return f"{self.lhs} -> {' '.join(symbols)}"
+        rendered = []
+        for sym in symbols:
+            rendered.append(TOKEN_MAP.get(sym, sym))
+        return f"{self.lhs} -> {' '.join(rendered)}"

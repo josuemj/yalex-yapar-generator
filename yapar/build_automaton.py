@@ -1,5 +1,4 @@
 from yapar.automaton.LR import Automaton
-from yapar.automaton.token_map import TOKEN_MAP
 
 def extract_symbols(grammar_dict, token_set):
     all_rhs_symbols = set()
