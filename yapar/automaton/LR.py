@@ -71,5 +71,5 @@ class Automaton:
         result += "\nTransitions:\n"
         for (src, sym), dst in self.transitions.items():
             sym_repr = TOKEN_MAP.get(sym, sym)
-            result += f"  State {src} --[{sym_repr}]--> State {dst}\n"
+            result += f"  State {src} --[{sym_repr}] → State {dst}\n"
         return result

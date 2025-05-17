@@ -1,10 +1,11 @@
 from utils.parser_utils import parse_yapar_file
 from yapar.build_automaton import build_from_grammar
+from yapar.visualizer import render_automaton
 
 #yalex stuff
 from yalex.src.lexer import YALexLexer
 
-parsed = parse_yapar_file('./examples/yapar/easy.yalp')
+parsed = parse_yapar_file('./examples/yapar/hard.yalp')
 
 print("Terminales:", parsed['terminales'])
 print("Grammar:")
@@ -16,6 +17,10 @@ print("\n===============AUTOMATON=======================\n")
 automaton = build_from_grammar(parsed)
 print(automaton)
 
+
+automaton = build_from_grammar(parsed)
+render_automaton(automaton, output_path='output/automaton', format='png')
+print("\n===============Se ha creado el automata en PNG=======================\n")
 
 ### TEST DEL YALEX
 #
