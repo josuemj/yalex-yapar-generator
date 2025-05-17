@@ -5,20 +5,21 @@ from yapar.visualizer import render_automaton
 #yalex stuff
 from yalex.src.lexer import YALexLexer
 
-#parsed = parse_yapar_file('./examples/yapar/hard.yalp')
+parsed = parse_yapar_file('./examples/yapar/complex.yalp')
 
-grammar = {
-    'E': [['E', '+', 'T'], ['T']],
-    'T': [['T', '*', 'F'], ['F']],
-    'F': [['(', 'E', ')'], ['id']]
-}
-
-terminales = {'+', '*', '(', ')', 'id'}
-
-parsed = {
-    'terminales': terminales,
-    'grammar': grammar
-}
+#EJEMPLO EN CLASE
+#grammar = {
+#    'E': [['E', '+', 'T'], ['T']],
+#    'T': [['T', '*', 'F'], ['F']],
+#    'F': [['(', 'E', ')'], ['id']]
+#}
+#
+#terminales = {'+', '*', '(', ')', 'id'}
+#
+#parsed = {
+#    'terminales': terminales,
+#    'grammar': grammar
+#}
 
 print("Terminales:", parsed['terminales'])
 print("Grammar:")

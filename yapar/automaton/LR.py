@@ -67,6 +67,16 @@ class Automaton:
                     self.core_items[seen[key]] = core_items
 
                 self.transitions[(state_index, symbol)] = seen[key]
+        
+        # Buscar estado de aceptación
+        accept_symbol = '$'
+        accept_item = Item(f"{self.start_symbol}'", [self.start_symbol], dot_position=1)
+
+        for idx, state in enumerate(self.states):
+            if accept_item in state:
+                self.transitions[(idx, accept_symbol)] = 'accept'
+                break
+
 
     def __str__(self):
         result = ""
@@ -77,6 +87,9 @@ class Automaton:
 
         result += "\nTransitions:\n"
         for (src, sym), dst in self.transitions.items():
-            sym_repr = TOKEN_MAP.get(sym, sym)
-            result += f"  State {src} --[{sym_repr}] → State {dst}\n"
+            sym_repr = TOKEN_MAP.get(sym, sym) if sym != '$' else '$'
+            if dst == 'accept':
+                result += f"  State {src} --[{sym_repr}] → ACCEPT\n"
+            else:
+                result += f"  State {src} --[{sym_repr}] → State {dst}\n"
         return result
