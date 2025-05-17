@@ -35,6 +35,7 @@ class Automaton:
         self.non_terminals = non_terminals
         self.start_symbol = start_symbol
         self.states = []
+        self.core_items = {}      # ← mapa: índice de estado → ítems núcleo
         self.transitions = {}
         self.build()
 
@@ -44,6 +45,7 @@ class Automaton:
         self.states.append(start_state)
         pending = [start_state]
         seen = {frozenset(start_state): 0}
+        self.core_items[0] = {augmented_start}
 
         while pending:
             state = pending.pop()
@@ -54,11 +56,16 @@ class Automaton:
                 new_state = ir_A(state, symbol, self.grammar)
                 if not new_state:
                     continue
+
+                core_items = {item.advance() for item in state if item.next_symbol() == symbol}
                 key = frozenset(new_state)
+
                 if key not in seen:
                     seen[key] = len(self.states)
                     self.states.append(new_state)
                     pending.append(new_state)
+                    self.core_items[seen[key]] = core_items
+
                 self.transitions[(state_index, symbol)] = seen[key]
 
     def __str__(self):
