@@ -9,6 +9,10 @@ from yalex.src.lexer import YALexLexer
 from yapar.utils.first import compute_first
 from yapar.utils.follow import compute_follow
 
+#table
+from yapar.utils.build_slr_table import build_slr_table
+
+
 parsed = parse_yapar_file('./examples/yapar/complex.yalp')
 
 #EJEMPLO EN CLASE
@@ -62,6 +66,19 @@ automaton = build_from_grammar(parsed)
 render_automaton(automaton, output_path='output/automaton', format='png')
 print("\n===============Se ha creado el automata en PNG=======================\n")
 
+augmented_start = start_symbol  # e.g., 'S'
+ACTION, GOTO = build_slr_table(automaton, grammar, terminals, follow, augmented_start)
+
+print("\n==== TABLA ACTION ====")
+for state, actions in ACTION.items():
+    for symbol, action in actions.items():
+        print(f"ACTION[{state}, {symbol}] = {action}")
+
+print("\n==== TABLA GOTO ====")
+for state, transitions in GOTO.items():
+    for symbol, next_state in transitions.items():
+        print(f"GOTO[{state}, {symbol}] = {next_state}")
+        
 ### TEST DEL YALEX
 
 difficulty = "complex" # "easy", "complex"
