@@ -1,23 +1,22 @@
 import streamlit as st
 
+st.set_page_config(page_title="YALex/YAPar Generator", layout="centered")
 
-# Combined UI with Yalex and Yapar
+st.title("YALex / YAPar Generator UI")
 
-'''
-This file implements the graphical user interface for the YALex/YAPar Generator project.
+# Dropdown for selecting example type
+example_type = st.selectbox(
+    "Choose YALex Specification Type:",
+    options=["Easy", "Hard", "Complex"]
+)
 
-The UI will:
-- Allow users to input YALex specifications for lexical analysis
-- Allow users to input YAPar specifications for syntax analysis
-- Generate visual representations of automata
-- Provide functionality to test input strings against the generated analyzers
-- Show results of the analysis process, including parse trees and error reports
-- Allow for exporting generated code and analysis results
+# Text input area for writing or editing the specification
+spec_input = st.text_area(
+    "code",
+    height=300,
+    placeholder="Type or paste your specification here..."
+)
 
-TODO:
-- Implement file upload/download functionality
-- Create tabs for different sections (lexer, parser, testing)
-- Add visualization components for automata and parse trees
-- Connect UI to the YALex and YAPar backend modules
-- Implement error handling and display
-'''
+# Run button
+if st.button("Run"):
+    st.success(f"to implement")
