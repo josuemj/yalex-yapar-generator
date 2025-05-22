@@ -40,3 +40,8 @@ def parse_tokens(tokens, action_table, goto_table, start_symbol):
             # ← else llamar a la rutina de recuperación de errores
             print(f"Error: acción inválida en estado {s} con símbolo '{a}'")
             return False
+
+def resolve_token_symbol(t):
+    if t['type'] == 'PalabraClave':
+        return f"PalabraClave_{t['value'].upper()}"  # Ej: 'if' -> 'PalabraClave_IF'
+    return t['type']

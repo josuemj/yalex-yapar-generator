@@ -1,7 +1,7 @@
 from utils.parser_utils import parse_yapar_file
 from yapar.build_automaton import build_from_grammar
 from yapar.visualizer import render_automaton
-from yapar.utils.parse_driver import parse_tokens
+from yapar.utils.parse_driver import parse_tokens, resolve_token_symbol
 
 #yalex stuff
 from yalex.src.lexer import YALexLexer
@@ -14,7 +14,7 @@ from yapar.utils.follow import compute_follow
 from yapar.utils.build_slr_table import build_slr_table
 
 
-parsed = parse_yapar_file('./examples/yapar/complex.yalp')
+parsed = parse_yapar_file('./examples/yapar/easy.yalp')
 
 # NOTE: Move to test
 #EJEMPLO EN CLASE  
@@ -41,7 +41,7 @@ print("\n===============FIRST FOLLLOW=======================\n")
         
 grammar = parsed['grammar']
 terminals = parsed['terminales']
-start_symbol = list(grammar.keys())[0] 
+start_symbol = 'Program' #list(grammar.keys())[0] 
 for lhs, prods in grammar.items():
     for prod in prods:
         if 'epsilon' in prod:
@@ -68,7 +68,7 @@ automaton = build_from_grammar(parsed)
 render_automaton(automaton, output_path='output/automaton', format='png')
 print("\n===============Se ha creado el automata en PNG=======================\n")
 
-augmented_start = start_symbol  # e.g., 'S'
+augmented_start = start_symbol  
 ACTION, GOTO = build_slr_table(automaton, grammar, terminals, follow, augmented_start)
 
 print("\n==== TABLA ACTION ====")
@@ -98,7 +98,7 @@ print("\n===============VERIFICACIÓN DE CADENA=======================\n")
         
 ### FLUJO YALEX - YAPAR
 
-difficulty = "complex" # "easy", "complex"
+difficulty = "easy" # "easy", "complex"
 
 yalex_file = f"examples/yalex/{difficulty}.yalex" # temp change
 input_file = f"examples/input_strings/{difficulty}.txt" # temp change
@@ -120,10 +120,10 @@ lexer.tokenize(input_text)  # Add debug parameter if supported
 # Mostrar los tokens generados
 print("\nTABLA DE TOKENS")
 for token in lexer.tokens:
-    print(token)
-    tokens = [(t['type'], t['value']) for t in lexer.tokens]
-
     print("\n=============== PARSEANDO CON YAPar ===============\n")
+    print(token)
+    tokens = [(resolve_token_symbol(t), t['value']) for t in lexer.tokens]
+
     success = parse_tokens(tokens, ACTION, GOTO, start_symbol)
 
     if success:
@@ -136,4 +136,3 @@ if lexer.errors:
   print("\nErrores Léxicos Encontrados:")
   for error in lexer.errors:
       print(error)
-

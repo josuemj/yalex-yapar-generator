@@ -1,3 +1,4 @@
+import re
 from collections import defaultdict
 
 def parse_yapar_file(filepath):
@@ -18,7 +19,9 @@ def parse_yapar_file(filepath):
 
     terminales = set()
     for line in token_lines:
-        terminales.update(line.replace('%token', '').strip().split())
+        # Extrae tokens entre comillas como una unidad, o sueltos como palabras
+        tokens = re.findall(r'"[^"]+"|\S+', line.replace('%token', '').strip())
+        terminales.update(token.strip('"') for token in tokens)
 
     # === 2. Extraer reglas de producción ===
     grammar_text = parts[1].strip()
@@ -56,6 +59,8 @@ def parse_productions(rhs):
         if p.lower() == 'epsilon' or p == 'ε' or p == '':
             productions.append(['ε'])  # producción vacía real
         else:
-            symbols = [s if s.lower() != 'epsilon' else 'ε' for s in p.split()]
+            # Soporta símbolos entre comillas (tokens con espacios)
+            symbols = re.findall(r'"[^"]+"|\S+', p)
+            symbols = [s.strip('"') for s in symbols]
             productions.append(symbols)
     return productions

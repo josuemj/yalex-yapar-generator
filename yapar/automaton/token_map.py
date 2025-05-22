@@ -13,9 +13,9 @@ TOKEN_MAP = {
     'IN': 'in',
     'RANGE': 'range',
 
-    'IDENTIFICADOR': '=',
-    'NUMERO': '0',
-    'DECIMAL': '0.0',
+    'identificador': '=',
+    'numero': '0',
+    'decimal': '0.0',
     'CADENA': '"..."',
 
     'EQ': '==',
@@ -28,14 +28,14 @@ TOKEN_MAP = {
     'DIV_EQ': '/=',
     'MOD_EQ': '%=',
 
-    'PLUS': '+',
-    'MINUS': '-',
-    'TIMES': '*',
-    'DIV': '/',
+    'Operador de suma': '+',
+    'Operador de resta': '-',
+    'Operador de multiplicacion': '*',
+    'Operador de division': '/',
     'MOD': '%',
     'LT': '<',
     'GT': '>',
-    'ASIGNACION': '=',
+    'Operador de asignacion': '=',
 
     'LPAREN': '(',
     'RPAREN': ')',
@@ -44,7 +44,42 @@ TOKEN_MAP = {
     'LBRACKET': '[',
     'RBRACKET': ']',
 
-    'SEMICOLON': ';',
+    'Punto y coma': ';',
     'COMMA': ',',
-    'COLON': ':'
+    'COLON': ':',
+
+    # Nuevos tokens compatibles con hard.yalp
+    'PalabraClave_IF': 'if',
+    'PalabraClave_WHILE': 'while',
+    'PalabraClave_FOR': 'for',
+    'PalabraClave_RETURN': 'return',
+    'PalabraClave_IN': 'in',
+
+    'Identificador': '=',
+    'Numero': '0',
+    'Decimal': '0.0',
+    'cadena': '"..."',
+
+    'Operador_de_igualdad': '==',
+    'Operador_diferente': '!=',
+    'Operador_menor_igual': '<=',
+    'Operador_mayor_igual': '>=',
+    'Operador_de_suma': '+',
+    'Operador_de_resta': '-',
+    'Operador_de_multiplicacion': '*',
+    'Operador_de_division': '/',
+    'Operador_de_modulo': '%',
+    'Operador_menor_que': '<',
+    'Operador_mayor_que': '>',
+    'Operador_de_asignacion': '=',
+
+    'Parentesis_izquierdo': '(',
+    'Parentesis_derecho': ')',
+    'Llave_izquierda': '{',
+    'Llave_derecha': '}',
+    'Corchete_izquierdo': '[',
+    'Corchete_derecho': ']',
+    'Punto_y_coma': ';',
+    'Coma': ',',
+    'Dos_puntos': ':'
 }
