@@ -1,20 +1,57 @@
-%token IF ELSE WHILE FOR RETURN IDENTIFICADOR NUMERO IGUAL ASIGNACION DOSPUNTOS CADENA
+%token if else while for print return in None True False
+%token Decimal Numero Identificador Cadena
+%token "Operador de igualdad" "Operador diferente" "Operador menor o igual que" "Operador mayor o igual que"
+%token "Operador de suma" "Operador de resta" "Operador de multiplicacion" "Operador de division" "Operador de modulo"
+%token "Operador menor que" "Operador mayor que" "Operador de asignacion"
+%token "Parentesis izquierdo" "Parentesis derecho"
+%token "Punto y coma" "Coma" "Dos puntos"
+
+%start Program
+%right else
 
 %%
 
-S : IF CONDICION BLOQUE
-  | WHILE CONDICION BLOQUE
-  | FOR IDENTIFICADOR IN IDENTIFICADOR BLOQUE
-  | RETURN EXP
-  | IDENTIFICADOR ASIGNACION EXP ;
+Program : SList
+        | SList "Punto y coma" 
+        ;
 
-CONDICION : EXP IGUAL EXP ;
+SList : S
+      | SList "Punto y coma" S 
+      ; 
 
-EXP : NUMERO
-    | IDENTIFICADOR
-    | CADENA ;
 
-BLOQUE : DOSPUNTOS INSTRUCCIONES ;
+S : if_stmt
+  | while CONDICION BLOQUE
+  | for Identificador in Identificador BLOQUE
+  | return EXP
+  | print "Parentesis izquierdo" EXP "Parentesis derecho"
+  | Identificador "Operador de asignacion" EXP ;
 
-INSTRUCCIONES : INSTRUCCIONES S
-              | S ;
+if_stmt : if CONDICION BLOQUE maybe_else ;
+
+maybe_else : else BLOQUE
+           | ;
+
+EXP : Numero
+    | Decimal
+    | Identificador
+    | Cadena
+    | True
+    | False
+    | None
+    | EXP "Operador de suma" EXP
+    | EXP "Operador de resta" EXP
+    | EXP "Operador de multiplicacion" EXP
+    | EXP "Operador de division" EXP
+    | EXP "Operador de modulo" EXP
+    | "Parentesis izquierdo" EXP "Parentesis derecho" ;
+
+CONDICION : EXP "Operador de igualdad" EXP
+          | EXP "Operador diferente" EXP
+          | EXP "Operador menor o igual que" EXP
+          | EXP "Operador mayor o igual que" EXP
+          | EXP "Operador menor que" EXP
+          | EXP "Operador mayor que" EXP
+          | EXP ;
+
+BLOQUE : "Dos puntos" SList ;
