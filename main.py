@@ -13,7 +13,7 @@ from yapar.utils.follow import compute_follow
 #table
 from yapar.utils.build_slr_table import build_slr_table
 
-difficulty = "easy" # "easy", "complex"
+difficulty = "complex" # "easy", "complex"
 
 parsed = parse_yapar_file(f'./examples/yapar/{difficulty}.yalp')
 
@@ -120,10 +120,11 @@ lexer.tokenize(input_text)  # Add debug parameter if supported
 count = 1
 print("\nTABLA DE TOKENS")
 
+for token in lexer.tokens:
+    print(token)
+
 tokens = [(resolve_token_type(t), t['value']) for t in lexer.tokens]
 
-for token in tokens:
-    print(token)
     
 print("\n=============== PARSEANDO CON YAPar ===============\n")
 

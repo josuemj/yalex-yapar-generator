@@ -1,42 +1,79 @@
-%token IF ELSE WHILE FOR RETURN DEF CLASS PRINT NONE TRUE FALSE IN RANGE
-%token IDENTIFICADOR NUMERO DECIMAL CADENA
-%token EQ NEQ LE GE PLUS_EQ MINUS_EQ TIMES_EQ DIV_EQ MOD_EQ
-%token PLUS MINUS TIMES DIV MOD LT GT ASIGNACION
-%token LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET
-%token SEMICOLON COMMA COLON
+%token if else while for return def class print None True False in range
+%token PalabraClave Decimal Numero Identificador cadena
+%token "Operador de igualdad" "Operador diferente" "Operador menor o igual que" "Operador mayor o igual que"
+%token "Operador de asignacion suma" "Operador de asignacion resta" "Operador de asignacion multiplicacion"
+%token "Operador de asignacion division" "Operador de asignacion modulo"
+%token "Operador de suma" "Operador de resta" "Operador de multiplicacion"
+%token "Operador de division" "Operador de modulo"
+%token "Operador menor que" "Operador mayor que" "Operador de asignacion"
+%token "Parentesis izquierdo" "Parentesis derecho"
+%token "Llave izquierda" "Llave derecha"
+%token "Corchete izquierdo" "Corchete derecho"
+%token "Punto y coma" "Coma" "Dos puntos"
+
+%start Program
+%right else
 
 %%
 
-S : DEF IDENTIFICADOR LPAREN PARAMS RPAREN LBRACE BODY RBRACE
-  | CLASS IDENTIFICADOR LBRACE BODY RBRACE ;
+Program : SList ;
 
-PARAMS : PARAMS COMMA IDENTIFICADOR
-       | IDENTIFICADOR
-       | epsilon ;
+SList : S
+      | SList S
+      | SList "Punto y coma" S ;
 
-BODY : BODY STMT
-     | STMT ;
+S : matched_stmt
+  | unmatched_stmt ;
 
-STMT : IF COND COLON STMT ELSE STMT
-     | WHILE COND COLON STMT
-     | RETURN EXP SEMICOLON
-     | PRINT LPAREN EXP RPAREN SEMICOLON
-     | IDENTIFICADOR ASIGNACION EXP SEMICOLON ;
+matched_stmt : if CONDICION BLOQUE else BLOQUE
+             | if CONDICION BLOQUE else matched_stmt
+             | other_stmt 
+             ;
 
-COND : EXP COMP EXP ;
+unmatched_stmt : if CONDICION BLOQUE
+               | if CONDICION BLOQUE else unmatched_stmt 
+               ;
 
-COMP : EQ | NEQ | LT | GT | LE | GE ;
+other_stmt :  while CONDICION BLOQUE
+              | for Identificador in range "Parentesis izquierdo" EXP "Parentesis derecho" BLOQUE
+              | print "Parentesis izquierdo" EXPLIST "Parentesis derecho"
+              | print "Parentesis izquierdo" EXPLIST "Parentesis derecho" "Punto y coma"
+              | Identificador "Operador de asignacion" EXP
+              | Identificador "Operador de asignacion" EXP "Punto y coma"
+              | Identificador "Operador de asignacion suma" EXP
+              | Identificador "Operador de asignacion suma" EXP "Punto y coma"
+              | Identificador "Operador de asignacion multiplicacion" EXP
+              | Identificador "Operador de asignacion multiplicacion" EXP "Punto y coma" ;
 
-EXP : EXP PLUS TERM
-    | EXP MINUS TERM
+
+CONDICION : EXP "Operador de igualdad" EXP
+          | EXP "Operador diferente" EXP
+          | EXP "Operador menor o igual que" EXP
+          | EXP "Operador mayor o igual que" EXP
+          | EXP "Operador menor que" EXP
+          | EXP "Operador mayor que" EXP
+          | EXP ;
+
+EXP : EXP "Operador de suma" TERM
+    | EXP "Operador de resta" TERM
     | TERM ;
 
-TERM : TERM TIMES FACTOR
-     | TERM DIV FACTOR
+EXPLIST : EXP
+        | EXPLIST "Coma" EXP 
+        ;
+
+TERM : TERM "Operador de multiplicacion" FACTOR
+     | TERM "Operador de division" FACTOR
+     | TERM "Operador de modulo" FACTOR
      | FACTOR ;
 
-FACTOR : NUMERO
-       | DECIMAL
-       | IDENTIFICADOR
-       | CADENA
-       | LPAREN EXP RPAREN ;
+FACTOR : cadena
+       | Numero
+       | Decimal
+       | Identificador
+       | "Parentesis izquierdo" EXP "Parentesis derecho" 
+       ;
+
+BLOQUE : "Dos puntos" matched_stmt
+       | "Dos puntos" unmatched_stmt
+       | "Dos puntos" SList ;

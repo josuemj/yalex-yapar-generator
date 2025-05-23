@@ -1,5 +1,5 @@
 %token if else while for print return in None True False
-%token Decimal Numero Identificador Cadena
+%token Decimal Numero Identificador cadena
 %token "Operador de igualdad" "Operador diferente" "Operador menor o igual que" "Operador mayor o igual que"
 %token "Operador de suma" "Operador de resta" "Operador de multiplicacion" "Operador de division" "Operador de modulo"
 %token "Operador menor que" "Operador mayor que" "Operador de asignacion"
@@ -33,10 +33,10 @@ other_stmt : while CONDICION BLOQUE
             | print "Parentesis izquierdo" EXP "Parentesis derecho"
             | Identificador "Operador de asignacion" EXP ;
 
-EXP : Numero
+EXP : cadena
     | Decimal
     | Identificador
-    | Cadena
+    | Numero
     | True
     | False
     | None

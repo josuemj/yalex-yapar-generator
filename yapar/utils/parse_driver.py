@@ -44,4 +44,6 @@ def resolve_token_type(t):
     # Si es una palabra clave, el token que reconoce el parser es el value en sí (e.g., 'if', 'else')
     if t['type'] == 'PalabraClave':
         return t['value']
+    if t['type'] == 'cadena':
+        return 'cadena'
     return t['type'][0].upper() + t['type'][1:]
