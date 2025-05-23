@@ -13,8 +13,9 @@ from yapar.utils.follow import compute_follow
 #table
 from yapar.utils.build_slr_table import build_slr_table
 
+difficulty = "easy" # "easy", "complex"
 
-parsed = parse_yapar_file('./examples/yapar/easy.yalp')
+parsed = parse_yapar_file(f'./examples/yapar/{difficulty}.yalp')
 
 # NOTE: Move to test
 #EJEMPLO EN CLASE  
@@ -97,8 +98,6 @@ print("\n===============VERIFICACIÓN DE CADENA=======================\n")
 
         
 ### FLUJO YALEX - YAPAR
-
-difficulty = "easy" # "easy", "complex"
 
 yalex_file = f"examples/yalex/{difficulty}.yalex" # temp change
 input_file = f"examples/input_strings/{difficulty}.txt" # temp change
