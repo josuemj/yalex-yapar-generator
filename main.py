@@ -13,7 +13,7 @@ from yapar.utils.follow import compute_follow
 #table
 from yapar.utils.build_slr_table import build_slr_table
 
-difficulty = "hard" # "easy", "complex"
+difficulty = "easy" # "easy", "complex"
 
 parsed = parse_yapar_file(f'./examples/yapar/{difficulty}.yalp')
 

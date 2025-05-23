@@ -11,26 +11,27 @@
 
 %%
 
-Program : SList
-        | SList "Punto y coma" 
-        ;
+Program : SList ;
 
 SList : S
+      | SList S  
       | SList "Punto y coma" S 
-      ; 
+      ;
 
+S : matched_stmt
+  | unmatched_stmt ;
 
-S : if_stmt
-  | while CONDICION BLOQUE
-  | for Identificador in Identificador BLOQUE
-  | return EXP
-  | print "Parentesis izquierdo" EXP "Parentesis derecho"
-  | Identificador "Operador de asignacion" EXP ;
+matched_stmt : if CONDICION BLOQUE else BLOQUE
+             | other_stmt ;
 
-if_stmt : if CONDICION BLOQUE maybe_else ;
+unmatched_stmt : if CONDICION BLOQUE
+               | if CONDICION BLOQUE else unmatched_stmt ;
 
-maybe_else : else BLOQUE
-           | ;
+other_stmt : while CONDICION BLOQUE
+            | for Identificador in Identificador BLOQUE
+            | return EXP
+            | print "Parentesis izquierdo" EXP "Parentesis derecho"
+            | Identificador "Operador de asignacion" EXP ;
 
 EXP : Numero
     | Decimal
@@ -54,4 +55,6 @@ CONDICION : EXP "Operador de igualdad" EXP
           | EXP "Operador mayor que" EXP
           | EXP ;
 
-BLOQUE : "Dos puntos" SList ;
+BLOQUE : "Dos puntos" matched_stmt
+       | "Dos puntos" unmatched_stmt
+       | "Dos puntos" SList ;

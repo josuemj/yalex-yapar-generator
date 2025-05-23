@@ -1,8 +1,8 @@
 if True:
-    x = 10;
-    y = 3.14;
-    mensaje = "Inicio del análisis";
+    x = 10
+    y = 3.14
+    mensaje = "Inicio del análisis"
     if x >= y:
-        res = x + y;
+        res = x + y
     else:
-        res = x - y;
+        res = x - y
