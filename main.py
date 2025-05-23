@@ -1,7 +1,7 @@
 from utils.parser_utils import parse_yapar_file
 from yapar.build_automaton import build_from_grammar
 from yapar.visualizer import render_automaton
-from yapar.utils.parse_driver import parse_tokens, resolve_token_symbol
+from yapar.utils.parse_driver import parse_tokens, resolve_token_type
 
 #yalex stuff
 from yalex.src.lexer import YALexLexer
@@ -13,8 +13,9 @@ from yapar.utils.follow import compute_follow
 #table
 from yapar.utils.build_slr_table import build_slr_table
 
+difficulty = "complex" # "easy", "complex"
 
-parsed = parse_yapar_file('./examples/yapar/easy.yalp')
+parsed = parse_yapar_file(f'./examples/yapar/{difficulty}.yalp')
 
 # NOTE: Move to test
 #EJEMPLO EN CLASE  
@@ -98,8 +99,6 @@ print("\n===============VERIFICACIÓN DE CADENA=======================\n")
         
 ### FLUJO YALEX - YAPAR
 
-difficulty = "easy" # "easy", "complex"
-
 yalex_file = f"examples/yalex/{difficulty}.yalex" # temp change
 input_file = f"examples/input_strings/{difficulty}.txt" # temp change
 
@@ -118,18 +117,27 @@ lexer.build_dfa()
 lexer.tokenize(input_text)  # Add debug parameter if supported
 
 # Mostrar los tokens generados
+count = 1
 print("\nTABLA DE TOKENS")
+
 for token in lexer.tokens:
-    print("\n=============== PARSEANDO CON YAPar ===============\n")
     print(token)
-    tokens = [(resolve_token_symbol(t), t['value']) for t in lexer.tokens]
 
-    success = parse_tokens(tokens, ACTION, GOTO, start_symbol)
+tokens = [(resolve_token_type(t), t['value']) for t in lexer.tokens]
 
-    if success:
-        print(" Cadena aceptada por el parser.")
-    else:
-        print(" Cadena rechazada por el parser.")
+    
+print("\n=============== PARSEANDO CON YAPar ===============\n")
+
+# Añade EOF explícitamente si hace falta
+if not tokens or tokens[-1][0] != '$':
+    tokens.append(('$', '$'))
+
+success = parse_tokens(tokens, ACTION, GOTO, count, start_symbol)
+
+if success:
+    print(" Cadena aceptada por el parser.")
+else:
+    print(" Cadena rechazada por el parser.")
 
 # Mostrar errores (lexicos) si los hay
 if lexer.errors:

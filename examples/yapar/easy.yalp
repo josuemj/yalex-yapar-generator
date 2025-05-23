@@ -1,11 +1,11 @@
-%token identificador numero  "Operador de suma"  "Operador de resta"  "Operador de multiplicacion"  "Operador de division"  "Operador de asignacion" "Punto y coma" 
+%token Identificador Numero  "Operador de suma"  "Operador de resta"  "Operador de multiplicacion"  "Operador de division"  "Operador de asignacion" "Punto y coma" 
 
 %%
 
 Program : Program S
         | S ;
 
-S : identificador "Operador de asignacion" E "Punto y coma" ;
+S : Identificador "Operador de asignacion" E "Punto y coma" ;
 
 E : E "Operador de suma" T
   | E "Operador de resta" T
@@ -15,5 +15,5 @@ T : T "Operador de multiplicacion" F
   | T "Operador de division" F
   | F ;
 
-F : numero
-  | identificador ;
+F : Numero
+  | Identificador ;

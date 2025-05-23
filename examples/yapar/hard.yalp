@@ -1,20 +1,60 @@
-%token IF ELSE WHILE FOR RETURN IDENTIFICADOR NUMERO IGUAL ASIGNACION DOSPUNTOS CADENA
+%token if else while for print return in None True False
+%token Decimal Numero Identificador cadena
+%token "Operador de igualdad" "Operador diferente" "Operador menor o igual que" "Operador mayor o igual que"
+%token "Operador de suma" "Operador de resta" "Operador de multiplicacion" "Operador de division" "Operador de modulo"
+%token "Operador menor que" "Operador mayor que" "Operador de asignacion"
+%token "Parentesis izquierdo" "Parentesis derecho"
+%token "Punto y coma" "Coma" "Dos puntos"
+
+%start Program
+%right else
 
 %%
 
-S : IF CONDICION BLOQUE
-  | WHILE CONDICION BLOQUE
-  | FOR IDENTIFICADOR IN IDENTIFICADOR BLOQUE
-  | RETURN EXP
-  | IDENTIFICADOR ASIGNACION EXP ;
+Program : SList ;
 
-CONDICION : EXP IGUAL EXP ;
+SList : S
+      | SList S  
+      | SList "Punto y coma" S 
+      ;
 
-EXP : NUMERO
-    | IDENTIFICADOR
-    | CADENA ;
+S : matched_stmt
+  | unmatched_stmt ;
 
-BLOQUE : DOSPUNTOS INSTRUCCIONES ;
+matched_stmt : if CONDICION BLOQUE else BLOQUE
+             | other_stmt ;
 
-INSTRUCCIONES : INSTRUCCIONES S
-              | S ;
+unmatched_stmt : if CONDICION BLOQUE
+               | if CONDICION BLOQUE else unmatched_stmt ;
+
+other_stmt : while CONDICION BLOQUE
+            | for Identificador in Identificador BLOQUE
+            | return EXP
+            | print "Parentesis izquierdo" EXP "Parentesis derecho"
+            | Identificador "Operador de asignacion" EXP ;
+
+EXP : cadena
+    | Decimal
+    | Identificador
+    | Numero
+    | True
+    | False
+    | None
+    | EXP "Operador de suma" EXP
+    | EXP "Operador de resta" EXP
+    | EXP "Operador de multiplicacion" EXP
+    | EXP "Operador de division" EXP
+    | EXP "Operador de modulo" EXP
+    | "Parentesis izquierdo" EXP "Parentesis derecho" ;
+
+CONDICION : EXP "Operador de igualdad" EXP
+          | EXP "Operador diferente" EXP
+          | EXP "Operador menor o igual que" EXP
+          | EXP "Operador mayor o igual que" EXP
+          | EXP "Operador menor que" EXP
+          | EXP "Operador mayor que" EXP
+          | EXP ;
+
+BLOQUE : "Dos puntos" matched_stmt
+       | "Dos puntos" unmatched_stmt
+       | "Dos puntos" SList ;
