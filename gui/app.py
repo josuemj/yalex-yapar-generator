@@ -29,4 +29,18 @@ spec_input = st.text_area(
 
 # Run button
 if st.button("Run"):
-    st.success(f"to implement")
+    # Get the selected example type and specification input
+    selected_type = example_type
+    specification = spec_input
+    
+    # Display the captured values (for debugging)
+    st.write(f"Selected example type: {selected_type}")
+    st.write(f"Specification input:")
+    st.code(specification)
+    
+    # TODO: Implement the actual analysis based on the example type and specification
+    if specification.strip():
+        st.success(f"Analysis will be performed on the {selected_type} specification")
+        # TODO : Lexer + yapar from main.py
+    else:
+        st.error("Please enter a specification to analyze")
