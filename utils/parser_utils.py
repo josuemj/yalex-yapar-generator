@@ -1,4 +1,3 @@
-import re
 from collections import defaultdict
 
 def parse_yapar_file(filepath):
@@ -10,7 +9,7 @@ def parse_yapar_file(filepath):
     if len(parts) != 2:
         raise ValueError("El archivo .yapar debe contener exactamente un separador '%%'.")
 
-    # === 1. Extraer terminales ===
+    # Extraer terminales
     header = parts[0]
     token_lines = [
         line.strip() for line in header.strip().splitlines()
@@ -19,11 +18,27 @@ def parse_yapar_file(filepath):
 
     terminales = set()
     for line in token_lines:
-        # Extrae tokens entre comillas como una unidad, o sueltos como palabras
-        tokens = re.findall(r'"[^"]+"|\S+', line.replace('%token', '').strip())
-        terminales.update(token.strip('"') for token in tokens)
+        line = line.replace('%token', '').strip()
+        tokens = []
+        i = 0
+        while i < len(line):
+            if line[i] == '"':
+                i += 1
+                start = i
+                while i < len(line) and line[i] != '"':
+                    i += 1
+                tokens.append(line[start:i])
+                i += 1  
+            elif line[i].isspace():
+                i += 1
+            else:
+                start = i
+                while i < len(line) and not line[i].isspace():
+                    i += 1
+                tokens.append(line[start:i])
+        terminales.update(tokens)
 
-    # === 2. Extraer reglas de producción ===
+    # Extraer reglas de producción 
     grammar_text = parts[1].strip()
     lines = [line.strip() for line in grammar_text.splitlines() if line]
 
@@ -37,11 +52,9 @@ def parse_yapar_file(filepath):
             rhs = rhs.strip()
             current_lhs = lhs
             grammar[lhs].extend(parse_productions(rhs))
-
         elif line.startswith('|'):
             rhs = line[1:].strip()
             grammar[current_lhs].extend(parse_productions(rhs))
-
         elif line.endswith(';'):
             continue
         else:
@@ -54,13 +67,44 @@ def parse_yapar_file(filepath):
 
 def parse_productions(rhs):
     productions = []
-    for p in rhs.split('|'):
-        p = p.strip().rstrip(';')
-        if p.lower() == 'epsilon' or p == 'ε' or p == '':
-            productions.append(['ε'])  # producción vacía real
+    raw_prods = []
+    current = ""
+    in_quotes = False
+
+    for c in rhs:
+        if c == '"':
+            in_quotes = not in_quotes
+            current += c
+        elif c == '|' and not in_quotes:
+            raw_prods.append(current.strip())
+            current = ""
         else:
-            # Soporta símbolos entre comillas (tokens con espacios)
-            symbols = re.findall(r'"[^"]+"|\S+', p)
-            symbols = [s.strip('"') for s in symbols]
+            current += c
+    if current:
+        raw_prods.append(current.strip())
+
+    for prod in raw_prods:
+        prod = prod.rstrip(';').strip()
+        if prod.lower() == 'epsilon' or prod == 'ε' or prod == '':
+            productions.append(['ε'])
+        else:
+            symbols = []
+            i = 0
+            while i < len(prod):
+                if prod[i] == '"':
+                    i += 1
+                    start = i
+                    while i < len(prod) and prod[i] != '"':
+                        i += 1
+                    symbols.append(prod[start:i])
+                    i += 1
+                elif prod[i].isspace():
+                    i += 1
+                else:
+                    start = i
+                    while i < len(prod) and not prod[i].isspace():
+                        i += 1
+                    symbols.append(prod[start:i])
             productions.append(symbols)
+
     return productions

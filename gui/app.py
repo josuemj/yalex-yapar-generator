@@ -34,7 +34,7 @@ if st.button("Run"):
     st.write(f"Running for: `{selected_type}`")
 
     # Load YAPAR grammar
-    parsed = parse_yapar_file(f'./examples/yapar/{selected_type}.yalp')
+    parsed = parse_yapar_file(f'../examples/yapar/{selected_type}.yalp')
     grammar = parsed['grammar']
     terminals = parsed['terminales']
     start_symbol = 'Program'
@@ -75,7 +75,7 @@ if st.button("Run"):
                 st.write(f"GOTO[{state}, {symbol}] = {next_state}")
 
     # YALEX Lexer
-    yalex_file = f"examples/yalex/{selected_type}.yalex"
+    yalex_file = f"../examples/yalex/{selected_type}.yalex"
     lexer = YALexLexer(yalex_file)
     lexer.build_dfa()
 
