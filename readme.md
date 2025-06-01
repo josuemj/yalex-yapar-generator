@@ -21,7 +21,10 @@ This project is a syntax analyzer generator that implements a complete compilati
 ## 🚀 How to Run
 
 ```bash
-python main.py 
+# To run in the console
+python main.py
+
+# To run with ui
 streamlit run gui/app.py
 ```
 
