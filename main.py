@@ -13,7 +13,7 @@ from yapar.utils.follow import compute_follow
 #table
 from yapar.utils.build_slr_table import build_slr_table
 
-difficulty = "easy" # "easy", "complex"
+difficulty = "hard" # "easy", "complex"
 
 parsed = parse_yapar_file(f'./examples/yapar/{difficulty}.yalp')
 
@@ -132,7 +132,7 @@ print("\n=============== PARSEANDO CON YAPar ===============\n")
 if not tokens or tokens[-1][0] != '$':
     tokens.append(('$', '$'))
 
-success = parse_tokens(tokens, ACTION, GOTO, count, start_symbol)
+success, _ = parse_tokens(tokens, ACTION, GOTO, count, start_symbol)
 
 if success:
     print(" Cadena aceptada por el parser.")

@@ -1,6 +1,7 @@
 def parse_tokens(tokens, action_table, goto_table, count, start_symbol):
     stack = [0]
     index = 0
+    logs = []
     a = tokens[index][0] if tokens else '$'
 
     while True:
@@ -10,11 +11,13 @@ def parse_tokens(tokens, action_table, goto_table, count, start_symbol):
         if action is None:
             value = tokens[index][1] if index < len(tokens) else 'EOF'
             print(f"Error sintáctico en línea {count}: no hay acción definida para estado {s} y símbolo '{a}' (valor: '{value}')")
-            return False
+            logs.append(f"Error sintáctico en línea {count}: no hay acción definida para estado {s} y símbolo '{a}' (valor: '{value}')")
+            return False, logs
 
         if action[0] == 'shift':
             t = action[1]
             print(f"Shift: símbolo '{a}' → estado {t}")
+            logs.append(f"Shift: símbolo '{a}' → estado {t}")
             stack.append(t)
             index += 1
             a = tokens[index][0] if index < len(tokens) else '$'
@@ -27,17 +30,20 @@ def parse_tokens(tokens, action_table, goto_table, count, start_symbol):
             goto_state = goto_table.get(t, {}).get(A)
             if goto_state is None:
                 print(f"Error en línea {count}: acción inválida en estado {s} con símbolo '{a}'")
-                return False
+                logs.append(f"Error en línea {count}: acción inválida en estado {s} con símbolo '{a}'")
+                return False, logs
             stack.append(goto_state)
             print(f"Reduce: {A} -> {' '.join(beta)}")
+            logs.append(f"Reduce: {A} -> {' '.join(beta)}")
 
         elif action[0] == 'accept':
             print("Cadena aceptada por el analizador sintáctico.")
-            return True
+            return True, logs
 
         else:
             print(f"Error en línea {count}: acción inválida en estado {s} con símbolo '{a}'")
-            return False
+            logs.append(f"Error en línea {count}: acción inválida en estado {s} con símbolo '{a}'")
+            return False, logs
 
 
 def resolve_token_type(t):

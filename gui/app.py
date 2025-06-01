@@ -28,6 +28,7 @@ show_automaton = st.checkbox("Show SLR Automaton", value=True)
 show_tokens = st.checkbox("Show Tokens", value=True)
 show_first_follow = st.checkbox("Show FIRST & FOLLOW", value=True)
 show_tables = st.checkbox("Show ACTION & GOTO Tables", value=True)
+show_phases = st.checkbox("Show SHIFT & REDUCE Tables", value=True)
 
 if st.button("Run"):
     selected_type = example_type
@@ -94,7 +95,12 @@ if st.button("Run"):
             tokens.append(('$', '$'))
 
         st.subheader("SLR Parsing Result")
-        success = parse_tokens(tokens, ACTION, GOTO, count=1, start_symbol=start_symbol)
+        success, logs = parse_tokens(tokens, ACTION, GOTO, count=1, start_symbol=start_symbol)
+
+        if show_phases:
+            for line in logs:
+                st.text(line)
+
         if success:
             st.success("✅ Input accepted by the parser.")
         else:
