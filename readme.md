@@ -44,6 +44,34 @@ Make sure your input files (.yalex, .yapar, and test strings) are placed in the 
 - Input files go in the `/input` folder.
 - Output files and visualizations will appear in `/output`.
 
+### 🗨️ Input example
+```bash
+# EASY:
+a = 1 + 2;
+b = a * 4;
+c = b - 3 / a;
+
+# HARD
+if True:
+    x = 10
+    y = 3.14
+    mensaje = "Inicio del análisis"
+    if x >= y:
+        res = x + y
+    else:
+        res = x - y
+
+# COMPLEX
+for i in range(5):
+    total = 0
+    while total < 100:
+        if i % 2 == 0:
+            total += i * 10.5
+        else:
+            total *= 2
+    print("Loop completed with value:", total)
+```
+
 ## ✅ Requirements
 
 - Python 3.8+
